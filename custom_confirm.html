@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom confirm</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+<script>
+    const customConfirm = (message) => {
+        return new Promise((resolve) => {
+            const modalHTML = `
+      <div class="modal" tabindex="-1" id="customConfirmModal">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+
+            <div class="modal-body">
+              <p align="center" class="m-0">${message}</p>
+            </div>
+            <div class="modal-footer p-0 border-0">
+
+              <button type="button" class="btn btn-primary m-0 w-50 border" data-bs-choice="true" data-bs-dismiss="modal"
+                style="
+                padding: 0.6rem;
+                background: transparent;
+                border-radius: 0 0 0 12px;
+                border: 0;
+                color: #0046ffd1;
+                font-weight: 600;">OK</button>
+
+              <button style="
+                padding: 0.6rem;
+                background: transparent;
+                color: crimson;
+                font-weight: 600;
+                border-radius: 0 0 12px 0;"
+                type="button" class="btn btn-secondary w-50 m-0 border" data-bs-choice="false" data-bs-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div</div>
+    `;
+
+            const tempDiv = document.createElement("div");
+            tempDiv.innerHTML = modalHTML.trim();
+
+            const customConfirmModal = tempDiv.firstChild;
+            document.body.appendChild(customConfirmModal);
+
+            const modalInstance = new bootstrap.Modal(customConfirmModal);
+            modalInstance.show();
+
+            customConfirmModal.addEventListener("click", (event) => {
+                const choiceButton = event.target.closest("[data-bs-choice]");
+                if (choiceButton) {
+                    const choice = choiceButton.getAttribute("data-bs-choice") === "true";
+                    modalInstance.hide();
+                    resolve(choice);
+                }
+            });
+
+            customConfirmModal.addEventListener("hidden.bs.modal", () => {
+                document.body.removeChild(customConfirmModal);
+            });
+        });
+    };
+
+    // Usage example
+    (async () => {
+        const result = await customConfirm("Are you sure?");
+        console.log(result)
+        if (result) {
+            console.log("User clicked OK.");
+            return result;
+        } else {
+            console.log("User clicked Cancel or closed the modal.");
+            return result;
+        }
+    })();
+
+</script>
+
+</body>
+</html>
