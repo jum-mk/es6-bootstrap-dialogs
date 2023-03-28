@@ -32,6 +32,7 @@ This repository provides custom ES6 implementations of the alert and confirm fun
 3. Use the custom functions in your code as shown in the examples below:
 
 
+```javascript
 // Custom alert example
 (async () => {
   await customAlert("This is a custom alert message!");
@@ -48,6 +49,7 @@ This repository provides custom ES6 implementations of the alert and confirm fun
   }
 })();
 
+```
 
 ## Benefits of Destroying the Modal Element
 
